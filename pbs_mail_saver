@@ -144,13 +144,15 @@ class PBS_mail_saver(object):
                       body text)" % self.tb_name_emails
                 c.execute(req)
 
-        req = "INSERT INTO %s \
-              VALUES (%d, '%s', '%s', '%s', '%s')" % (
+        body = "\n".join(self.email_body)
+        body = body.replace("\"", "\\'")
+        req = """INSERT INTO %s \
+              VALUES (%d, \"%s\", \"%s\", \"%s\", \"%s\")""" % (
               self.tb_name_emails,
               now, self.email_to,
               self.email_from,
               self.email_subject,
-              "\n".join(self.email_body))
+              body)
         c.execute(req)
 
         conn.commit()
